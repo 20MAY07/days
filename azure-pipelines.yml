@@ -1,7 +1,5 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+# Maven build and run Days application
 
 trigger:
 - main
@@ -11,6 +9,7 @@ pool:
 
 steps:
 - task: Maven@3
+  displayName: 'Build Maven Project'
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -19,4 +18,8 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    goals: 'clean package'
+
+- script: |
+    java -jar target/days-1.0-SNAPSHOT.jar
+  displayName: 'Run Days Application'
